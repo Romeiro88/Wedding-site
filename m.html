@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Фотогалерея и видеотека с Яндекс.Диска</title>
+    <style>
+        /* Общие стили */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Шапка */
+        header {
+            background: linear-gradient(135deg, #4b6cb7, #182848);
+            color: white;
+            padding: 1.2rem 0;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.5rem;
+        }
+        
+        /* Навигация */
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            margin-left: 1.5rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: white;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        
+        nav a:hover::after {
+            width: 80%;
+        }
+        
+        /* Основной контент */
+        main {
+            padding: 2.5rem 0;
+            min-height: calc(100vh - 160px);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            color: #4b6cb7;
+            font-size: 2.2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(to right, #4b6cb7, #182848);
+            border-radius: 2px;
+        }
+        
+        /* Галерея изображений */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 4rem;
+        }
+        
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            background-color: white;
+            position: relative;
+        }
+        
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .gallery-item p {
+            padding: 15px;
+            text-align: center;
+            font-weight: 500;
+            color: #444;
+        }
+        
+        /* Видео секция */
+        .video-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            margin-bottom: 4rem;
+        }
+        
+        .video-item {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .video-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .video-item video {
+            width: 100%;
+            display: block;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .video-description {
+            padding: 18px;
+        }
+        
+        .video-description h3 {
+            margin-bottom: 10px;
+            color: #4b6cb7;
+        }
+        
+        /* О проекте и контакты */
+        .info-section {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            margin-bottom: 3rem;
+            line-height: 1.8;
+        }
+        
+        .info-section h2 {
+            color: #4b6cb7;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+        }
+        
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .contact-item {
+            background: linear-gradient(135deg, #f5f7fa, #e4e8f0);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .contact-item i {
+            font-size: 1.5rem;
+            color: #4b6cb7;
+            margin-bottom: 10px;
+        }
+        
+        /* Подвал */
+        footer {
+            background: linear-gradient(135deg, #182848, #4b6cb7);
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+        }
+        
+        .footer-links a:hover {
+            opacity: 0.8;
+        }
+        
+        .yandex-badge {
+            margin-top: 15px;
+            padding: 8px 15px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        /* Адаптивность для мобильных устройств */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1.2rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav li {
+                margin: 8px 12px;
+            }
+            
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 15px;
+            }
+            
+            .video-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .gallery-item img {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .gallery-item img {
+                height: 150px;
+            }
+            
+            .info-section {
+                padding: 20px;
+            }
+            
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Иконки (эмуляция Font Awesome) */
+        .icon {
+            display: inline-block;
+            width: 1em;
+            height: 1em;
+            stroke-width: 0;
+            stroke: currentColor;
+            fill: currentColor;
+        }
+        
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        
+        /* Улучшенная навигация */
+        .active {
+            background-color: rgba(255,255,255,0.15);
+        }
+        
+        .active::after {
+            width: 80% !important;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <svg class="icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
+                    </svg>
+                    МедиаАрхив
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#gallery" class="active">Галерея</a></li>
+                        <li><a href="#videos">Видео</a></li>
+                        <li><a href="#about">О проекте</a></li>
+                        <li><a href="#contact">Контакты</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        <div class="container">
+            <section id="gallery">
+                <h2 class="section-title">Фотогалерея</h2>
+                <div class="gallery">
+                    <!-- Изображения с Яндекс.Диска -->
+                    <div class="gallery-item fade-in">
+                        <img src="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr" alt="Горный пейзаж">
+                        <p>Горный пейзаж</p>
+                    </div>
+                    <div class="gallery-item fade-in delay-1">
+                        <img src="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr" alt="Лесная тропа">
+                        <p>Лесная тропа</p>
+                    </div>
+                    <div class="gallery-item fade-in delay-2">
+                        <img src="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr" alt="Озеро в горах">
+                        <p>Озеро в горах</p>
+                    </div>
+                    <div class="gallery-item fade-in delay-3">
+                        <img src="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr" alt="Закат над морем">
+                        <p>Закат над морем</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="videos">
+                <h2 class="section-title">Видеотека</h2>
+                <div class="video-section">
+                    <!-- Видео с Яндекс.Диска -->
+                    <div class="video-item fade-in">
+                        <video controls poster="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr">
+                            <source src="https://disk.yandex.ru/d/kOi5qAKohkhs6w" type="video/mp4">
+                            Ваш браузер не поддерживает видео тег.
+                        </video>
+                        <div class="video-description">
+                            <h3>Природа России</h3>
+                            <p>Удивительные пейзажи и красоты природы нашей страны. Видео снято в разных регионах России.</p>
+                        </div>
+                    </div>
+                    <div class="video-item fade-in delay-1">
+                        <video controls poster="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr">
+                            <source src="https://disk.yandex.ru/d/kOi5qAKohkhs6w" type="video/mp4">
+                            Ваш браузер не поддерживает видео тег.
+                        </video>
+                        <div class="video-description">
+                            <h3>Городские зарисовки</h3>
+                            <p>Жизнь мегаполиса в динамике. Архитектура, транспорт и люди большого города.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="about">
+                <div class="info-section fade-in">
+                    <h2>О проекте</h2>
+                    <p>Этот сайт демонстрирует возможность использования медиафайлов с Яндекс.Диска для создания веб-страниц. Все изображения и видео загружаются непосредственно из облачного хранилища, что позволяет экономить место на хостинге.</p>
+                    <p>Сайт полностью адаптивен и корректно отображается на всех устройствах - от смартфонов до десктопов. Мы используем современные технологии HTML5 и CSS3 для создания приятного пользовательского опыта.</p>
+                    <p>Для подключения медиафайлов с Яндекс.Диска необходимо:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Загрузить файлы на Яндекс.Диск</li>
+                        <li>Настроить публичный доступ к файлам</li>
+                        <li>Скопировать прямые ссылки на файлы</li>
+                        <li>Вставить ссылки в HTML-код</li>
+                    </ul>
+                </div>
+            </section>
+            
+            <section id="contact">
+                <div class="info-section fade-in delay-1">
+                    <h2>Контакты</h2>
+                    <p>Свяжитесь с нами, если у вас есть вопросы или предложения по сотрудничеству.</p>
+                    <div class="contact-grid">
+                        <div class="contact-item">
+                            <svg class="icon" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M20,4H4C2.9,4,2,4.9,2,6V18C2,19.1,2.9,20,4,20H20C21.1,20,22,19.1,22,18V6C22,4.9,21.1,4,20,4ZM20,8L12,13L4,8V6L12,11L20,6V8Z" />
+                            </svg>
+                            <p>example@domain.com</p>
+                        </div>
+                        <div class="contact-item">
+                            <svg class="icon" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M6.62,10.79C8.06,13.62,10.38,15.94,13.21,17.38L15.41,15.18C15.69,14.9,16.08,14.82,16.43,14.93C17.55,15.3,18.75,15.5,20,15.5A1,1,0,0,1,21,16.5V20A1,1,0,0,1,20,21A17,17,0,0,1,3,4A1,1,0,0,1,4,3H7.5A1,1,0,0,1,8.5,4C8.5,5.25,8.7,6.45,9.07,7.57C9.18,7.92,9.1,8.31,8.82,8.59L6.62,10.79Z" />
+                            </svg>
+                            <p>+7 (123) 456-78-90</p>
+                        </div>
+                        <div class="contact-item">
+                            <svg class="icon" viewBox="0 0 24 24" width="24" height="24">
+                                <path d="M12,2C8.13,2,5,5.13,5,9C5,14.25,12,22,12,22S19,14.25,19,9C19,5.13,15.87,2,12,2ZM12,11.5A2.5,2.5,0,0,1,9.5,9A2.5,2.5,0,0,1,12,6.5A2.5,2.5,0,0,1,14.5,9A2.5,2.5,0,0,1,12,11.5Z" />
+                            </svg>
+                            <p>г. Москва, ул. Примерная, д. 1</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">МедиаАрхив</div>
+                <div class="footer-links">
+                    <a href="#gallery">Галерея</a>
+                    <a href="#videos">Видео</a>
+                    <a href="#about">О проекте</a>
+                    <a href="#contact">Контакты</a>
+                </div>
+                <p>© 2023 МедиаАрхив. Все права защищены.</p>
+                <div class="yandex-badge">
+                    Медиафайлы размещены на Яндекс.Диске
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Плавная прокрутка к якорям
+        document.querySelectorAll('nav a, .footer-links a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Обновление активного пункта меню
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+        
+        // Добавляем класс активного элемента при прокрутке
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 100)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+        
+        // Анимация появления элементов при прокрутке
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, observerOptions);
+        
+        // Наблюдаем за элементами, которые должны появляться при прокрутке
+        document.querySelectorAll('.gallery-item, .video-item, .info-section').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
