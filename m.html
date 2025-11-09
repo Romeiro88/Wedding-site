@@ -1,569 +1,488 @@
-<!DOCTYPE html>
+<!doctype html> 
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Фотогалерея и видеотека с Яндекс.Диска</title>
-    <style>
-        /* Общие стили */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
-        body {
-            background-color: #f8f9fa;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Шапка */
-        header {
-            background: linear-gradient(135deg, #4b6cb7, #182848);
-            color: white;
-            padding: 1.2rem 0;
-            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 1.8rem;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo i {
-            margin-right: 10px;
-            font-size: 1.5rem;
-        }
-        
-        /* Навигация */
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-        
-        nav li {
-            margin-left: 1.5rem;
-        }
-        
-        nav a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            padding: 8px 12px;
-            border-radius: 4px;
-            position: relative;
-        }
-        
-        nav a:hover {
-            background-color: rgba(255,255,255,0.15);
-        }
-        
-        nav a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 0;
-            height: 2px;
-            background: white;
-            transition: all 0.3s ease;
-            transform: translateX(-50%);
-        }
-        
-        nav a:hover::after {
-            width: 80%;
-        }
-        
-        /* Основной контент */
-        main {
-            padding: 2.5rem 0;
-            min-height: calc(100vh - 160px);
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 2.5rem;
-            color: #4b6cb7;
-            font-size: 2.2rem;
-            position: relative;
-            padding-bottom: 15px;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(to right, #4b6cb7, #182848);
-            border-radius: 2px;
-        }
-        
-        /* Галерея изображений */
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-bottom: 4rem;
-        }
-        
-        .gallery-item {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-            background-color: white;
-            position: relative;
-        }
-        
-        .gallery-item:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.15);
-        }
-        
-        .gallery-item img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.5s ease;
-        }
-        
-        .gallery-item:hover img {
-            transform: scale(1.05);
-        }
-        
-        .gallery-item p {
-            padding: 15px;
-            text-align: center;
-            font-weight: 500;
-            color: #444;
-        }
-        
-        /* Видео секция */
-        .video-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 4rem;
-        }
-        
-        .video-item {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            transition: transform 0.3s ease;
-        }
-        
-        .video-item:hover {
-            transform: translateY(-5px);
-        }
-        
-        .video-item video {
-            width: 100%;
-            display: block;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .video-description {
-            padding: 18px;
-        }
-        
-        .video-description h3 {
-            margin-bottom: 10px;
-            color: #4b6cb7;
-        }
-        
-        /* О проекте и контакты */
-        .info-section {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-            margin-bottom: 3rem;
-            line-height: 1.8;
-        }
-        
-        .info-section h2 {
-            color: #4b6cb7;
-            margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-        
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .contact-item {
-            background: linear-gradient(135deg, #f5f7fa, #e4e8f0);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        
-        .contact-item i {
-            font-size: 1.5rem;
-            color: #4b6cb7;
-            margin-bottom: 10px;
-        }
-        
-        /* Подвал */
-        footer {
-            background: linear-gradient(135deg, #182848, #4b6cb7);
-            color: white;
-            text-align: center;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .footer-logo {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-        
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            margin: 15px 0;
-        }
-        
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            transition: opacity 0.3s;
-        }
-        
-        .footer-links a:hover {
-            opacity: 0.8;
-        }
-        
-        .yandex-badge {
-            margin-top: 15px;
-            padding: 8px 15px;
-            background-color: rgba(255,255,255,0.1);
-            border-radius: 20px;
-            font-size: 0.9rem;
-        }
-        
-        /* Адаптивность для мобильных устройств */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            nav ul {
-                margin-top: 1.2rem;
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-            
-            nav li {
-                margin: 8px 12px;
-            }
-            
-            .gallery {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-                gap: 15px;
-            }
-            
-            .video-section {
-                grid-template-columns: 1fr;
-            }
-            
-            .section-title {
-                font-size: 1.8rem;
-            }
-            
-            .gallery-item img {
-                height: 180px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .gallery {
-                grid-template-columns: 1fr 1fr;
-            }
-            
-            .gallery-item img {
-                height: 150px;
-            }
-            
-            .info-section {
-                padding: 20px;
-            }
-            
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        /* Иконки (эмуляция Font Awesome) */
-        .icon {
-            display: inline-block;
-            width: 1em;
-            height: 1em;
-            stroke-width: 0;
-            stroke: currentColor;
-            fill: currentColor;
-        }
-        
-        /* Анимации */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.8s ease forwards;
-        }
-        
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
-        
-        /* Улучшенная навигация */
-        .active {
-            background-color: rgba(255,255,255,0.15);
-        }
-        
-        .active::after {
-            width: 80% !important;
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Свадьба Анастасии и Романа — Барокко</title>
+<meta name="description" content="Свадебная галерея — фото и видео. Барочное оформление, музыка, полноэкранный просмотр." />
+<style>
+  :root{
+    --bg:#fffaf3;
+    --muted:#423f3a;
+    --gold:#d4af37;
+    --glass: rgba(255,255,255,0.76);
+    --shadow: 0 18px 60px rgba(20,18,16,0.12);
+    --maxw:1100px;
+    --trans: .6s cubic-bezier(.2,.9,.24,1);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg); color:var(--muted); -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+
+  /* ======= Background pattern from Yandex Disk ======= */
+  body::before{
+    content:"";
+    position:fixed; inset:0; z-index:-2; pointer-events:none;
+    background-image: url("https://disk.yandex.ru/i/52X_ClrcdF2h4Q");
+    background-repeat: repeat;
+    background-size: 400px 400px;
+    opacity: 0.15;
+  }
+
+  /* page container */
+  .page{max-width:var(--maxw);margin:30px auto;padding:18px; position:relative; z-index:0}
+  header{text-align:center;margin-bottom:8px}
+  svg.orn{width:240px;height:72px;display:block;margin:0 auto 8px}
+  h1{margin:0;font-size:30px;color:#111;font-weight:700}
+
+  /* music control top-right */
+  .music-btn{ position:fixed; right:18px; top:18px; width:56px;height:56px;border-radius:50%; background:linear-gradient(180deg,#fff,#fff7e5); border:2px solid rgba(212,175,55,0.16); box-shadow:0 12px 30px rgba(212,175,55,0.08); display:flex;align-items:center;justify-content:center; cursor:pointer; z-index:9999 }
+  .music-btn.play{ transform:scale(1.03); box-shadow:0 18px 48px rgba(212,175,55,0.14) }
+
+  /* main layout */
+  .stage-wrap{ display:flex; flex-direction:column; gap:22px; align-items:center; z-index:1 }
+
+  .stage{ width:100%; padding:18px; border-radius:20px; box-shadow:var(--shadow); background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,250,240,0.94)); }
+  .content{ width:100%; max-width:980px; margin:0 auto; position:relative; }
+
+  /* PHOTO: large area */
+  .slider{ height:calc(85vh); border-radius:14px; overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative; background:linear-gradient(180deg,#fffdf8,#fff); }
+  .slides{ display:flex; height:100%; transition:transform var(--trans); will-change:transform; }
+  .slide{ min-width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:28px; box-sizing:border-box; position:relative; opacity:0; transition:opacity .45s ease; }
+  .slide.active{ opacity:1; }
+  .photo-frame{ width:calc(100% - 120px); max-width:1100px; height:calc(100% - 140px); border-radius:14px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#fff,#fffaf0); border:1px solid rgba(212,175,55,0.08); box-shadow:0 40px 120px rgba(20,18,16,0.14); position:relative; }
+  .photo-frame img{ width:100%; height:100%; object-fit:contain; object-position:center center; display:block; transition:transform .9s ease, filter .6s ease; background:#fbf9f5; }
+
+  /* remove captions (user requested) */
+  .caption{ display:none; }
+
+  .arrow{ position:absolute; top:50%; transform:translateY(-50%); width:72px;height:72px;border-radius:50%; display:flex;align-items:center;justify-content:center; font-size:34px; cursor:pointer; background:linear-gradient(180deg,#fff,#fff7e5); border:2px solid rgba(212,175,55,0.12); box-shadow:0 16px 40px rgba(20,18,16,0.12); z-index:60; }
+  .arrow.left{ left:36px } .arrow.right{ right:36px }
+  .arrow:hover{ transform:translateY(-50%) scale(1.04) }
+
+  /* fullscreen adjustments */
+  .stage:fullscreen, .stage:-webkit-full-screen{ background:#000; padding:0; border-radius:0; height:100vh; }
+  .stage:fullscreen .content, .stage:-webkit-full-screen .content{ width:100vw; height:100vh; max-width:100vw; display:flex; align-items:center; justify-content:center; }
+  .stage:fullscreen .photo-frame, .stage:-webkit-full-screen .photo-frame{ width:100vw; height:100vh; max-width:none; border-radius:0; border:none; box-shadow:none; }
+  .stage:fullscreen .arrow, .stage:-webkit-full-screen .arrow{ background:rgba(255,255,255,0.06); color:#fff; border-color:rgba(255,255,255,0.06); }
+
+  .top-controls{ position:absolute; right:26px; top:22px; z-index:75; display:flex; gap:10px }
+  .control-sm{ padding:8px 12px; border-radius:10px; background:linear-gradient(180deg,#fff,#fff7e6); border:1px solid rgba(212,175,55,0.1); font-weight:700; cursor:pointer }
+
+  .dots{ position:absolute; bottom:18px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:70; }
+  .dot{ width:12px;height:12px;border-radius:50%; background:rgba(255,255,255,0.85); border:1px solid rgba(212,175,55,0.08); cursor:pointer; }
+  .dot.active{ background:var(--gold); box-shadow:0 12px 30px rgba(212,175,55,0.14); transform:scale(1.3); }
+
+  .spinner{ position:absolute; width:56px;height:56px;border-radius:50%; border:6px solid rgba(255,255,255,0.6); border-top-color:var(--gold); animation:spin 1s linear infinite; z-index:80; right:50%; transform:translateX(50%); top:48%; }
+  @keyframes spin{ to{ transform:rotate(360deg) translateX(50%); } }
+
+  /* VIDEO: enlarged and responsive to match photo block size on mobile */
+  .vslider{ height:calc(60vh); border-radius:12px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:18px; background:linear-gradient(180deg,#fffdf6,#fff); }
+  .vtrack{ display:flex; height:100%; transition:transform var(--trans); width:100%; align-items:center; }
+  .vslide{ min-width:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; padding:8px; box-sizing:border-box; }
+  .vframe{ width:calc(100% - 120px); max-width:1020px; height:100%; border-radius:12px; overflow:hidden; background:#000; display:flex; align-items:center; justify-content:center; border:1px solid rgba(212,175,55,0.06); box-shadow:0 20px 60px rgba(20,18,16,0.1); }
+  .vframe video{ width:100%; height:100%; object-fit:contain; background:#000; display:block; }
+
+  .varrow{ position:absolute; top:50%; transform:translateY(-50%); width:64px;height:64px;border-radius:50%; display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#fff,#fff7e6); border:2px solid rgba(212,175,55,0.1); font-size:28px; cursor:pointer; z-index:60; box-shadow:0 12px 40px rgba(20,18,16,0.12); }
+  .varrow.left{ left:34px } .varrow.right{ right:34px }
+
+  footer{ text-align:center; margin-top:18px; color:var(--muted); font-size:13px }
+
+  /* responsive: mobile-optimized - make vslider approx same height as slider on narrow screens */
+  @media (max-width:900px){
+    .slider{ height:calc(72vh); }
+    .vslider{ height:calc(72vh); }
+    .arrow.left{ left:14px } .arrow.right{ right:14px }
+    .varrow.left{ left:14px } .varrow.right{ right:14px }
+    .photo-frame{ width:calc(100% - 48px); height:calc(100% - 120px); }
+    .vframe{ width:calc(100% - 48px); height:calc(100% - 120px); }
+  }
+  @media (max-width:480px){
+    .slider{ height:calc(68vh); }
+    .vslider{ height:calc(68vh); }
+    .photo-frame{ width:calc(100% - 36px); height:calc(100% - 120px); }
+    .vframe{ width:calc(100% - 36px); height:calc(100% - 120px); }
+    .arrow{ width:56px;height:56px;font-size:28px }
+    .varrow{ width:56px;height:56px;font-size:24px }
+  }
+</style>
 </head>
 <body>
+  <!-- Music button (top-right) -->
+  <button id="musicBtn" class="music-btn" aria-pressed="false" title="Включить/выключить музыку">🎵</button>
+
+  <div class="page">
     <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="logo">
-                    <svg class="icon" viewBox="0 0 24 24" width="24" height="24">
-                        <path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z" />
-                    </svg>
-                    МедиаАрхив
-                </div>
-                <nav>
-                    <ul>
-                        <li><a href="#gallery" class="active">Галерея</a></li>
-                        <li><a href="#videos">Видео</a></li>
-                        <li><a href="#about">О проекте</a></li>
-                        <li><a href="#contact">Контакты</a></li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
+      <svg class="orn" viewBox="0 0 480 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#f9eac3"/><stop offset="1" stop-color="#d4af37"/></linearGradient></defs>
+        <path d="M6 40 C86 6, 146 6, 240 40 C334 74, 394 74, 474 40" stroke="url(#g)" stroke-width="3.6" fill="none" stroke-linecap="round"/>
+      </svg>
+      <h1>Свадьба Анастасии и Романа</h1>
     </header>
-    
-    <main>
-        <div class="container">
-            <section id="gallery">
-                <h2 class="section-title">Фотогалерея</h2>
-                <div class="gallery">
-                    <!-- Изображения с Яндекс.Диска -->
-                    <div class="gallery-item fade-in">
-                        <img src="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr" alt="Горный пейзаж">
-                        <p>Горный пейзаж</p>
-                    </div>
-                    <div class="gallery-item fade-in delay-1">
-                        <img src="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr" alt="Лесная тропа">
-                        <p>Лесная тропа</p>
-                    </div>
-                    <div class="gallery-item fade-in delay-2">
-                        <img src="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr" alt="Озеро в горах">
-                        <p>Озеро в горах</p>
-                    </div>
-                    <div class="gallery-item fade-in delay-3">
-                        <img src="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr" alt="Закат над морем">
-                        <p>Закат над морем</p>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="videos">
-                <h2 class="section-title">Видеотека</h2>
-                <div class="video-section">
-                    <!-- Видео с Яндекс.Диска -->
-                    <div class="video-item fade-in">
-                        <video controls poster="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr">
-                            <source src="https://disk.yandex.ru/d/kOi5qAKohkhs6w" type="video/mp4">
-                            Ваш браузер не поддерживает видео тег.
-                        </video>
-                        <div class="video-description">
-                            <h3>Природа России</h3>
-                            <p>Удивительные пейзажи и красоты природы нашей страны. Видео снято в разных регионах России.</p>
-                        </div>
-                    </div>
-                    <div class="video-item fade-in delay-1">
-                        <video controls poster="https://avatars.mds.yandex.net/get-images-cbir/1837005/2a7esXqFJbJmBw0YJt3wCg8878/ocr">
-                            <source src="https://disk.yandex.ru/d/kOi5qAKohkhs6w" type="video/mp4">
-                            Ваш браузер не поддерживает видео тег.
-                        </video>
-                        <div class="video-description">
-                            <h3>Городские зарисовки</h3>
-                            <p>Жизнь мегаполиса в динамике. Архитектура, транспорт и люди большого города.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            
-            <section id="about">
-                <div class="info-section fade-in">
-                    <h2>О проекте</h2>
-                    <p>Этот сайт демонстрирует возможность использования медиафайлов с Яндекс.Диска для создания веб-страниц. Все изображения и видео загружаются непосредственно из облачного хранилища, что позволяет экономить место на хостинге.</p>
-                    <p>Сайт полностью адаптивен и корректно отображается на всех устройствах - от смартфонов до десктопов. Мы используем современные технологии HTML5 и CSS3 для создания приятного пользовательского опыта.</p>
-                    <p>Для подключения медиафайлов с Яндекс.Диска необходимо:</p>
-                    <ul style="margin-left: 20px; margin-top: 10px;">
-                        <li>Загрузить файлы на Яндекс.Диск</li>
-                        <li>Настроить публичный доступ к файлам</li>
-                        <li>Скопировать прямые ссылки на файлы</li>
-                        <li>Вставить ссылки в HTML-код</li>
-                    </ul>
-                </div>
-            </section>
-            
-            <section id="contact">
-                <div class="info-section fade-in delay-1">
-                    <h2>Контакты</h2>
-                    <p>Свяжитесь с нами, если у вас есть вопросы или предложения по сотрудничеству.</p>
-                    <div class="contact-grid">
-                        <div class="contact-item">
-                            <svg class="icon" viewBox="0 0 24 24" width="24" height="24">
-                                <path d="M20,4H4C2.9,4,2,4.9,2,6V18C2,19.1,2.9,20,4,20H20C21.1,20,22,19.1,22,18V6C22,4.9,21.1,4,20,4ZM20,8L12,13L4,8V6L12,11L20,6V8Z" />
-                            </svg>
-                            <p>example@domain.com</p>
-                        </div>
-                        <div class="contact-item">
-                            <svg class="icon" viewBox="0 0 24 24" width="24" height="24">
-                                <path d="M6.62,10.79C8.06,13.62,10.38,15.94,13.21,17.38L15.41,15.18C15.69,14.9,16.08,14.82,16.43,14.93C17.55,15.3,18.75,15.5,20,15.5A1,1,0,0,1,21,16.5V20A1,1,0,0,1,20,21A17,17,0,0,1,3,4A1,1,0,0,1,4,3H7.5A1,1,0,0,1,8.5,4C8.5,5.25,8.7,6.45,9.07,7.57C9.18,7.92,9.1,8.31,8.82,8.59L6.62,10.79Z" />
-                            </svg>
-                            <p>+7 (123) 456-78-90</p>
-                        </div>
-                        <div class="contact-item">
-                            <svg class="icon" viewBox="0 0 24 24" width="24" height="24">
-                                <path d="M12,2C8.13,2,5,5.13,5,9C5,14.25,12,22,12,22S19,14.25,19,9C19,5.13,15.87,2,12,2ZM12,11.5A2.5,2.5,0,0,1,9.5,9A2.5,2.5,0,0,1,12,6.5A2.5,2.5,0,0,1,14.5,9A2.5,2.5,0,0,1,12,11.5Z" />
-                            </svg>
-                            <p>г. Москва, ул. Примерная, д. 1</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+
+    <main class="stage-wrap" role="main">
+      <!-- PHOTO BLOCK -->
+      <section class="stage" id="photoStage" aria-label="Фото">
+        <div class="content">
+          <div class="top-controls" role="toolbar" aria-label="Контролы">
+            <button id="fullBtn" class="control-sm" title="Полный экран">Полный экран</button>
+            <button id="slideBtn" class="control-sm" title="Слайд-шоу">Слайд-шоу</button>
+          </div>
+
+          <div class="slider" id="slider" aria-live="polite">
+            <div class="slides" id="slides" role="list"></div>
+
+            <button class="arrow left" id="prevBtn" aria-label="Предыдущее">‹</button>
+            <button class="arrow right" id="nextBtn" aria-label="Следующее">›</button>
+
+            <div class="dots" id="dots" role="tablist" aria-label="Навигация"></div>
+
+            <div class="spinner" id="photoSpinner" style="display:none" aria-hidden="true"></div>
+          </div>
         </div>
+      </section>
+
+      <!-- VIDEO BLOCK -->
+      <section class="stage" id="videoStage" aria-label="Видео">
+        <div class="content">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+            <div style="font-weight:800;color:#111">Видео</div>
+            <div style="font-size:13px;color:var(--muted)">Листайте влево/вправо</div>
+          </div>
+
+          <div class="vslider" id="vslider" aria-live="polite">
+            <div class="vtrack" id="vtrack" role="list"></div>
+
+            <button class="varrow left" id="vprev" aria-label="Предыдущее видео">‹</button>
+            <button class="varrow right" id="vnext" aria-label="Следующее видео">›</button>
+
+            <div class="spinner" id="videoSpinner" style="display:none" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
     </main>
-    
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">МедиаАрхив</div>
-                <div class="footer-links">
-                    <a href="#gallery">Галерея</a>
-                    <a href="#videos">Видео</a>
-                    <a href="#about">О проекте</a>
-                    <a href="#contact">Контакты</a>
-                </div>
-                <p>© 2023 МедиаАрхив. Все права защищены.</p>
-                <div class="yandex-badge">
-                    Медиафайлы размещены на Яндекс.Диске
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <script>
-        // Плавная прокрутка к якорям
-        document.querySelectorAll('nav a, .footer-links a').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-                
-                // Обновление активного пункта меню
-                document.querySelectorAll('nav a').forEach(link => {
-                    link.classList.remove('active');
-                });
-                this.classList.add('active');
-            });
-        });
-        
-        // Добавляем класс активного элемента при прокрутке
-        window.addEventListener('scroll', function() {
-            const sections = document.querySelectorAll('section');
-            const navLinks = document.querySelectorAll('nav a');
-            
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= (sectionTop - 100)) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Анимация появления элементов при прокрутке
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
-        
-        // Наблюдаем за элементами, которые должны появляться при прокрутке
-        document.querySelectorAll('.gallery-item, .video-item, .info-section').forEach(el => {
-            observer.observe(el);
-        });
-    </script>
+
+    <footer>© 2025 — Анастасия и Роман</footer>
+  </div>
+
+  <!-- Hidden audio tag; src set on demand -->
+  <audio id="bgAudio" loop preload="none"></audio>
+
+<script>
+/* ========== Your media links (Yandex Disk public share links) ========== */
+const IMAGE_URLS = [
+  "https://disk.yandex.ru/i/TRXEn7REa1C3WA",
+  "https://disk.yandex.ru/i/ghGxUUWgdb0KBg",
+  "https://disk.yandex.ru/i/WiisfoiE6SuIPA",
+  "https://disk.yandex.ru/i/FqCtgOis_onhsQ",
+  "https://disk.yandex.ru/i/V8bTrKI0chQGWA",
+
+  /* ===== Новые добавленные фото ===== */
+  "https://disk.yandex.ru/i/8UVcVayWNW4x1g",
+  "https://disk.yandex.ru/i/vynW3QSn9mcCIw",
+  "https://disk.yandex.ru/i/uUx4BpY0upJnbw",
+  "https://disk.yandex.ru/i/FOftnRyaG0jtrA",
+  "https://disk.yandex.ru/i/V8qocwaUI6Nw7g",
+  "https://disk.yandex.ru/i/dT-dJ0WvA-RvjA",
+  "https://disk.yandex.ru/i/PgDStDnAhTNz4w",
+  "https://disk.yandex.ru/i/Lqzj5cGSZd_4kw",
+  "https://disk.yandex.ru/i/6y8AQzdHKTIK9Q",
+  "https://disk.yandex.ru/i/6pnbbPTHKLrfGw",
+  "https://disk.yandex.ru/i/R7G_XOzYk6qJow",
+  "https://disk.yandex.ru/i/C5Rr7OljIxvQzA",
+  "https://disk.yandex.ru/i/2ojSo6n55ViIWA",
+  "https://disk.yandex.ru/i/uxe-n2e9mpN6IA",
+  "https://disk.yandex.ru/i/aczqsLqFoQlTZA",
+  "https://disk.yandex.ru/i/fWaxeAQ9yR6HgQ",
+  "https://disk.yandex.ru/i/z0kbHkLag_pw7A",
+  "https://disk.yandex.ru/i/2_W1GAzgFpAsug",
+  "https://disk.yandex.ru/i/IRH6-69sJp05NQ",
+  "https://disk.yandex.ru/i/p71FrTBzk-s9aA",
+  "https://disk.yandex.ru/i/p36QnMOwbix4qQ",
+  "https://disk.yandex.ru/i/2kWqak1qEd7ltg",
+  "https://disk.yandex.ru/i/-RM5abuz4rNMug",
+  "https://disk.yandex.ru/i/HNWaSQR3SLOq5A",
+  "https://disk.yandex.ru/i/IPM8-y6URmPN9Q",
+  "https://disk.yandex.ru/i/dJErjX8LwP3zQg",
+  "https://disk.yandex.ru/i/KtI43qiz5WQdjQ",
+  "https://disk.yandex.ru/i/zv5yLi3_-OXQkQ",
+  "https://disk.yandex.ru/i/ktuRsLuBz39Mmw",
+  "https://disk.yandex.ru/i/r1k5u3qoZRG-Zw",
+  "https://disk.yandex.ru/i/EHRCmRUSS_XQYQ",
+  "https://disk.yandex.ru/i/d9GNT-KOUMwq2A",
+  "https://disk.yandex.ru/i/Yd0Xfz0VfmAcfA",
+  "https://disk.yandex.ru/i/fL_TP-_wYcm3DA",
+  "https://disk.yandex.ru/i/YiIHVPK0Xkw0Rw",
+  "https://disk.yandex.ru/i/XHEpzwcDkl35VQ",
+  "https://disk.yandex.ru/i/J8Dcj5csZbZkEg",
+  "https://disk.yandex.ru/i/tiUPgm-EnIcp1w",
+  "https://disk.yandex.ru/i/41Xncv9lr1xjbA",
+  "https://disk.yandex.ru/i/Ba0dRvw3Z8u6LA",
+  "https://disk.yandex.ru/i/zkBxEZa7brzTzQ",
+  "https://disk.yandex.ru/i/gPIYgJCtTcHv8Q",
+  "https://disk.yandex.ru/i/miq7_qzWtuqJ0Q",
+  "https://disk.yandex.ru/i/3MnnU-BZa9m4kA",
+  "https://disk.yandex.ru/i/D85o9Vga6-euVQ",
+  "https://disk.yandex.ru/i/zXvAcv2WJxb0YA",
+  "https://disk.yandex.ru/i/jZn0JlTeQGqolQ",
+  "https://disk.yandex.ru/i/hPTvAXhg9LpZ7Q",
+  "https://disk.yandex.ru/i/nnM3XwF4pttEvg",
+  "https://disk.yandex.ru/i/QO3lmWl07lL92Q",
+  "https://disk.yandex.ru/i/IJ04WsgweB_j9w",
+  "https://disk.yandex.ru/i/5StpvHq6u7u5_g",
+  "https://disk.yandex.ru/i/woXslcRJosJWSA",
+  "https://disk.yandex.ru/i/7uahwtiDbNjVig",
+  "https://disk.yandex.ru/i/BvV7X2Ne-jotJw",
+  "https://disk.yandex.ru/i/xfC3Qnrk6OudTw",
+  "https://disk.yandex.ru/i/PBTcQFqhVPBzxg",
+  "https://disk.yandex.ru/i/cd6yx26vxtaWbA",
+  "https://disk.yandex.ru/i/OOJ7mKWS-iVVLQ",
+  "https://disk.yandex.ru/i/nMlcFEB8GtgG6Q",
+  "https://disk.yandex.ru/i/5rRqunRvWgT-kg",
+  "https://disk.yandex.ru/i/00VYMPPrWvY_UA",
+  "https://disk.yandex.ru/i/WjY-Ch0pEcwaFw",
+  "https://disk.yandex.ru/i/jGVt1zkr7Udrng",
+  "https://disk.yandex.ru/i/OK8zG8OPCHDgLw",
+  "https://disk.yandex.ru/i/NLBQA40dinp1-A",
+  "https://disk.yandex.ru/i/Rz-b2tymNX8ojg",
+  "https://disk.yandex.ru/i/CBC7otKT9u-y1w",
+  "https://disk.yandex.ru/i/azmOru08jkcrxQ",
+  "https://disk.yandex.ru/i/ykgxadRg1mp7gQ",
+  "https://disk.yandex.ru/i/k0LwZYA5HW-3uQ",
+  "https://disk.yandex.ru/i/0WUG_qgE69rd0g",
+  "https://disk.yandex.ru/i/-5yJIt9C4JSSXQ",
+  "https://disk.yandex.ru/i/xyUgohmomrwMsA",
+  "https://disk.yandex.ru/i/fCxKDwQBBDKg8w",
+  "https://disk.yandex.ru/i/_eWhS03yXitozA",
+  "https://disk.yandex.ru/i/ParkfgyiarIDRw",
+  "https://disk.yandex.ru/i/1AeReD6PttI5MQ",
+  "https://disk.yandex.ru/i/985IDrunchAUOw",
+  "https://disk.yandex.ru/i/8OLufuCOi8_S2Q",
+  "https://disk.yandex.ru/i/4WhgVIyKxmZnYA",
+  "https://disk.yandex.ru/i/grLAYwemj-fprA",
+  "https://disk.yandex.ru/i/utLfbkZ3pn301A",
+  "https://disk.yandex.ru/i/JabrSJ0OQl96nA",
+  "https://disk.yandex.ru/i/7qvoPDcwvnV6FA",
+  "https://disk.yandex.ru/i/6EgZRZ-1kMondQ",
+  "https://disk.yandex.ru/i/j3voDGF3d_rPUQ",
+  "https://disk.yandex.ru/i/yGsS9PcDAOcSIg",
+  "https://disk.yandex.ru/i/ZICCD3Hge_9CQQ",
+  "https://disk.yandex.ru/i/Y4LGqkyq-oe4-w",
+  "https://disk.yandex.ru/i/3KhxbcVpNJEGQA",
+  "https://disk.yandex.ru/i/-FnUyeb0Vc7xAQ",
+  "https://disk.yandex.ru/i/7xbVX9aogU7kjw",
+  "https://disk.yandex.ru/i/lFj4TNmqrb4ayQ",
+  "https://disk.yandex.ru/i/odu1eQXRZTwAiQ",
+  "https://disk.yandex.ru/i/S8Lc_IQ_fL_P6Q",
+  "https://disk.yandex.ru/i/dJnF7Vk5HxZDLw",
+  "https://disk.yandex.ru/i/pWeqDTx27DkZ4Q",
+  "https://disk.yandex.ru/i/vfD7GKh4MpfC2A",
+  "https://disk.yandex.ru/i/8b1ezDCtbBT5Nw",
+  "https://disk.yandex.ru/i/OOqz_JsByLk5Yw",
+  "https://disk.yandex.ru/i/if4Evt849GcI6Q",
+  "https://disk.yandex.ru/i/0HuokNkkPQgWOw",
+  "https://disk.yandex.ru/i/LgJ5Vm5sufCwqA",
+  "https://disk.yandex.ru/i/yL7SN5E8mbOxlg",
+  "https://disk.yandex.ru/i/VYwxkNzlt1HXYQ",
+  "https://disk.yandex.ru/i/6CjP8cyAQZnucg",
+  "https://disk.yandex.ru/i/UU-Vt3hRCbq--w",
+  "https://disk.yandex.ru/i/sYza-Cfx4Ipffg",
+  "https://disk.yandex.ru/i/DVgp38RO66d4vw",
+  "https://disk.yandex.ru/i/4KlpKv8R3UUO5A",
+  "https://disk.yandex.ru/i/JDtgFpww4cxU9g",
+  "https://disk.yandex.ru/i/boAk6nAAqW1JTA",
+  "https://disk.yandex.ru/i/tQJsEXJnIETHDw",
+  "https://disk.yandex.ru/i/4JVCa1V31KeyOg",
+  "https://disk.yandex.ru/i/I_djgvDAVwR6HQ",
+  "https://disk.yandex.ru/i/GYXiHDBRB-VNEQ",
+  "https://disk.yandex.ru/i/B08QjByQPNtj5A",
+  "https://disk.yandex.ru/i/hQB_6C7R5-6whg",
+  "https://disk.yandex.ru/i/7TnjNUyZ5mVwCQ",
+  "https://disk.yandex.ru/i/VK7MEB9i5_ipVQ",
+  "https://disk.yandex.ru/i/Bf_kB9Mb69Kd8A",
+  "https://disk.yandex.ru/i/BnaSVz84KdXgyw",
+  "https://disk.yandex.ru/i/phcyW5_aU9VT0Q",
+  "https://disk.yandex.ru/i/TXfMCLi-Ycallw"
+];
+const VIDEO_URLS = [
+  "https://disk.yandex.ru/i/aVIzdxyn1sFOMQ",
+  "https://disk.yandex.ru/i/Z5-NQ3nAHVmHMA"
+];
+const MUSIC_PUBLIC = "https://disk.yandex.ru/d/C35zD0rWMPDJmQ";
+/* ====================================================================== */
+
+/* Helper: convert Yandex public share -> direct href via Cloud API */
+async function getDirectLink(publicUrl){
+  try{
+    const res = await fetch(`https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=${encodeURIComponent(publicUrl)}`);
+    const json = await res.json();
+    if (json && json.href) return json.href;
+    return publicUrl;
+  }catch(err){
+    console.warn('Yandex API failed, using public URL as fallback', err);
+    return publicUrl;
+  }
+}
+
+/* ---------- PHOTO SLIDER ---------- */
+const slidesEl = document.getElementById('slides');
+const dotsEl = document.getElementById('dots');
+const photoSpinner = document.getElementById('photoSpinner');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const fullBtn = document.getElementById('fullBtn');
+const slideBtn = document.getElementById('slideBtn');
+
+let photoState = { index:0, items:[], autoplay:false, timer:null, prefetched:new Set() };
+
+async function buildPhotos(){
+  photoSpinner.style.display='block';
+  for (let i=0;i<IMAGE_URLS.length;i++){
+    const slide = document.createElement('div'); slide.className='slide';
+    const frame = document.createElement('div'); frame.className='photo-frame';
+    const localSpin = document.createElement('div'); localSpin.className='spinner';
+    frame.appendChild(localSpin);
+
+    const img = document.createElement('img'); img.alt = `Фото ${i+1}`; img.loading='lazy';
+    (async ()=>{
+      const direct = await getDirectLink(IMAGE_URLS[i]);
+      img.src = direct;
+      img.addEventListener('load', ()=> localSpin.style.display='none');
+      img.addEventListener('error', ()=> { localSpin.style.display='none'; img.alt='Не удалось загрузить изображение'; });
+    })();
+
+    frame.appendChild(img);
+    slide.appendChild(frame);
+    slidesEl.appendChild(slide);
+
+    const dot = document.createElement('button'); dot.className='dot'; dot.dataset.index=i; dot.setAttribute('aria-label', `К фото ${i+1}`);
+    dot.addEventListener('click', ()=> gotoPhoto(i));
+    dotsEl.appendChild(dot);
+
+    photoState.items.push({ slide, frame, img });
+  }
+  photoSpinner.style.display='none';
+  updatePhoto();
+  // click frame -> fullscreen
+  slidesEl.addEventListener('click', (e)=>{ if (e.target.closest('.photo-frame')) openFullscreen(); });
+  document.addEventListener('keydown', (e)=>{ if (e.key==='ArrowRight') nextPhoto(); if (e.key==='ArrowLeft') prevPhoto(); if (e.key==='Escape') exitFullscreenIfNeeded(); });
+  setupSwipeSlides();
+}
+
+function updatePhoto(){
+  slidesEl.style.transform = `translateX(-${photoState.index * 100}%)`;
+  photoState.items.forEach((it,i)=> it.slide.classList.toggle('active', i===photoState.index));
+  [...dotsEl.children].forEach((d,i)=> d.classList.toggle('active', i===photoState.index));
+  prefetchPhoto(photoState.index+1);
+}
+function nextPhoto(){ photoState.index = (photoState.index+1) % photoState.items.length; updatePhoto(); }
+function prevPhoto(){ photoState.index = (photoState.index-1 + photoState.items.length) % photoState.items.length; updatePhoto(); }
+function gotoPhoto(i){ photoState.index = i; updatePhoto(); }
+prevBtn.addEventListener('click', prevPhoto); nextBtn.addEventListener('click', nextPhoto);
+
+/* slide-show toggle (was "Авто") */
+slideBtn.addEventListener('click', ()=>{
+  photoState.autoplay = !photoState.autoplay;
+  slideBtn.textContent = photoState.autoplay ? 'Стоп' : 'Слайд-шоу';
+  if (photoState.autoplay) photoState.timer = setInterval(nextPhoto, 4500);
+  else { clearInterval(photoState.timer); photoState.timer = null; }
+});
+
+/* prefetch next image */
+async function prefetchPhoto(i){
+  if (i>=IMAGE_URLS.length) return;
+  if (photoState.prefetched.has(i)) return;
+  try{ const direct = await getDirectLink(IMAGE_URLS[i]); const p=new Image(); p.src=direct; photoState.prefetched.add(i); }catch(e){}
+}
+
+/* swipe */
+function setupSwipeSlides(){
+  let sx=0;
+  slidesEl.addEventListener('touchstart', e=> sx = e.touches[0].clientX, {passive:true});
+  slidesEl.addEventListener('touchend', e=>{ const ex = e.changedTouches[0].clientX; const dx = ex - sx; if (dx>60) prevPhoto(); else if (dx<-60) nextPhoto(); }, {passive:true});
+}
+
+/* fullscreen handling */
+const photoStage = document.getElementById('photoStage');
+async function openFullscreen(){
+  try{ if (photoStage.requestFullscreen) await photoStage.requestFullscreen(); else if (photoStage.webkitRequestFullscreen) await photoStage.webkitRequestFullscreen(); }catch(e){ console.warn('Fullscreen failed', e); }
+}
+fullBtn.addEventListener('click', openFullscreen);
+function exitFullscreenIfNeeded(){ if (document.fullscreenElement || document.webkitFullscreenElement){ if (document.exitFullscreen) document.exitFullscreen(); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } }
+
+/* ========== VIDEO SLIDER ========== */
+const vtrack = document.getElementById('vtrack');
+const vprev = document.getElementById('vprev'); const vnext = document.getElementById('vnext');
+const videoSpinner = document.getElementById('videoSpinner');
+let videoState = { index:0, items:[] };
+
+async function buildVideos(){
+  videoSpinner.style.display='block';
+  for (let i=0;i<VIDEO_URLS.length;i++){
+    const vslide = document.createElement('div'); vslide.className='vslide';
+    const vframe = document.createElement('div'); vframe.className='vframe';
+    const video = document.createElement('video'); video.controls=true; video.preload='metadata';
+    (async ()=>{ const direct = await getDirectLink(VIDEO_URLS[i]); const src = document.createElement('source'); src.src = direct; src.type = 'video/mp4'; video.appendChild(src); })();
+    vframe.appendChild(video);
+    vslide.appendChild(vframe);
+    vtrack.appendChild(vslide);
+    videoState.items.push({ vslide, video });
+    // pause music when video plays
+    video.addEventListener('play', onVideoPlay);
+    video.addEventListener('pause', onVideoPause);
+    video.addEventListener('ended', onVideoPause);
+  }
+  videoSpinner.style.display='none';
+  updateVideo();
+  setupSwipeVideos();
+}
+
+function updateVideo(){ vtrack.style.transform = `translateX(-${videoState.index * 100}%)`; }
+function nextVideo(){ videoState.index = (videoState.index+1) % videoState.items.length; updateVideo(); }
+function prevVideo(){ videoState.index = (videoState.index-1 + videoState.items.length) % videoState.items.length; updateVideo(); }
+vprev.addEventListener('click', prevVideo); vnext.addEventListener('click', nextVideo);
+
+function setupSwipeVideos(){ let sx=0; vtrack.addEventListener('touchstart', e=> sx=e.touches[0].clientX, {passive:true}); vtrack.addEventListener('touchend', e=>{ const ex = e.changedTouches[0].clientX; const dx = ex - sx; if (dx>60) prevVideo(); else if (dx<-60) nextVideo(); }, {passive:true}); }
+
+/* ===== MUSIC CONTROL & SYNC ===== */
+const musicBtn = document.getElementById('musicBtn');
+const bgAudio = document.getElementById('bgAudio');
+let musicPlaying = false;
+let musicWasPlayingBeforeVideo = false;
+
+musicBtn.addEventListener('click', async ()=>{
+  if (!bgAudio.src){
+    const direct = await getDirectLink(MUSIC_PUBLIC);
+    bgAudio.src = direct;
+  }
+  if (!musicPlaying){
+    try{ await bgAudio.play(); musicPlaying=true; musicBtn.classList.add('play'); musicBtn.setAttribute('aria-pressed','true'); }
+    catch(err){ console.warn('Playback failed', err); alert('Воспроизведение может быть заблокировано браузером — нажмите ещё раз.'); }
+  } else {
+    bgAudio.pause(); musicPlaying=false; musicBtn.classList.remove('play'); musicBtn.setAttribute('aria-pressed','false');
+  }
+});
+
+function onVideoPlay(){
+  if (bgAudio.src && !bgAudio.paused){
+    musicWasPlayingBeforeVideo = true;
+    bgAudio.pause(); musicPlaying=false; musicBtn.classList.remove('play');
+  } else musicWasPlayingBeforeVideo = false;
+}
+function onVideoPause(){
+  const anyPlaying = videoState.items.some(it => it.video && !it.video.paused && !it.video.ended);
+  if (!anyPlaying && musicWasPlayingBeforeVideo){
+    bgAudio.play().then(()=>{ musicPlaying=true; musicBtn.classList.add('play'); }).catch(()=>{});
+    musicWasPlayingBeforeVideo=false;
+  }
+}
+
+/* ========== INIT ========== */
+(async function init(){
+  await buildPhotos();
+  await buildVideos();
+  updatePhoto();
+  updateVideo();
+})();
+</script>
 </body>
 </html>
