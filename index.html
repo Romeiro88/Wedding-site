@@ -18,33 +18,27 @@
   *{box-sizing:border-box}
   html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg); color:var(--muted); -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
 
-  /* ======= Background pattern from Yandex Disk ======= */
   body::before{
     content:"";
     position:fixed; inset:0; z-index:-2; pointer-events:none;
-    background-image: url("https://disk.yandex.ru/i/52X_ClrcdF2h4Q");
+    background-image: url("https://getfile.dokpub.com/yandex/get/https://disk.yandex.ru/i/52X_ClrcdF2h4Q");
     background-repeat: repeat;
     background-size: 400px 400px;
     opacity: 0.15;
   }
 
-  /* page container */
   .page{max-width:var(--maxw);margin:30px auto;padding:18px; position:relative; z-index:0}
   header{text-align:center;margin-bottom:8px}
   svg.orn{width:240px;height:72px;display:block;margin:0 auto 8px}
   h1{margin:0;font-size:30px;color:#111;font-weight:700}
 
-  /* music control top-right */
   .music-btn{ position:fixed; right:18px; top:18px; width:56px;height:56px;border-radius:50%; background:linear-gradient(180deg,#fff,#fff7e5); border:2px solid rgba(212,175,55,0.16); box-shadow:0 12px 30px rgba(212,175,55,0.08); display:flex;align-items:center;justify-content:center; cursor:pointer; z-index:9999 }
   .music-btn.play{ transform:scale(1.03); box-shadow:0 18px 48px rgba(212,175,55,0.14) }
 
-  /* main layout */
   .stage-wrap{ display:flex; flex-direction:column; gap:22px; align-items:center; z-index:1 }
-
   .stage{ width:100%; padding:18px; border-radius:20px; box-shadow:var(--shadow); background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,250,240,0.94)); }
   .content{ width:100%; max-width:980px; margin:0 auto; position:relative; }
 
-  /* PHOTO: large area */
   .slider{ height:calc(85vh); border-radius:14px; overflow:hidden; display:flex; align-items:center; justify-content:center; position:relative; background:linear-gradient(180deg,#fffdf8,#fff); }
   .slides{ display:flex; height:100%; transition:transform var(--trans); will-change:transform; }
   .slide{ min-width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:28px; box-sizing:border-box; position:relative; opacity:0; transition:opacity .45s ease; }
@@ -52,14 +46,9 @@
   .photo-frame{ width:calc(100% - 120px); max-width:1100px; height:calc(100% - 140px); border-radius:14px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#fff,#fffaf0); border:1px solid rgba(212,175,55,0.08); box-shadow:0 40px 120px rgba(20,18,16,0.14); position:relative; }
   .photo-frame img{ width:100%; height:100%; object-fit:contain; object-position:center center; display:block; transition:transform .9s ease, filter .6s ease; background:#fbf9f5; }
 
-  /* remove captions (user requested) */
-  .caption{ display:none; }
-
   .arrow{ position:absolute; top:50%; transform:translateY(-50%); width:72px;height:72px;border-radius:50%; display:flex;align-items:center;justify-content:center; font-size:34px; cursor:pointer; background:linear-gradient(180deg,#fff,#fff7e5); border:2px solid rgba(212,175,55,0.12); box-shadow:0 16px 40px rgba(20,18,16,0.12); z-index:60; }
   .arrow.left{ left:36px } .arrow.right{ right:36px }
-  .arrow:hover{ transform:translateY(-50%) scale(1.04) }
 
-  /* fullscreen adjustments */
   .stage:fullscreen, .stage:-webkit-full-screen{ background:#000; padding:0; border-radius:0; height:100vh; }
   .stage:fullscreen .content, .stage:-webkit-full-screen .content{ width:100vw; height:100vh; max-width:100vw; display:flex; align-items:center; justify-content:center; }
   .stage:fullscreen .photo-frame, .stage:-webkit-full-screen .photo-frame{ width:100vw; height:100vh; max-width:none; border-radius:0; border:none; box-shadow:none; }
@@ -75,7 +64,6 @@
   .spinner{ position:absolute; width:56px;height:56px;border-radius:50%; border:6px solid rgba(255,255,255,0.6); border-top-color:var(--gold); animation:spin 1s linear infinite; z-index:80; right:50%; transform:translateX(50%); top:48%; }
   @keyframes spin{ to{ transform:rotate(360deg) translateX(50%); } }
 
-  /* VIDEO: enlarged and responsive to match photo block size on mobile */
   .vslider{ height:calc(60vh); border-radius:12px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:18px; background:linear-gradient(180deg,#fffdf6,#fff); }
   .vtrack{ display:flex; height:100%; transition:transform var(--trans); width:100%; align-items:center; }
   .vslide{ min-width:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; padding:8px; box-sizing:border-box; }
@@ -87,7 +75,6 @@
 
   footer{ text-align:center; margin-top:18px; color:var(--muted); font-size:13px }
 
-  /* responsive: mobile-optimized - make vslider approx same height as slider on narrow screens */
   @media (max-width:900px){
     .slider{ height:calc(72vh); }
     .vslider{ height:calc(72vh); }
@@ -107,7 +94,6 @@
 </style>
 </head>
 <body>
-  <!-- Music button (top-right) -->
   <button id="musicBtn" class="music-btn" aria-pressed="false" title="Включить/выключить музыку">🎵</button>
 
   <div class="page">
@@ -120,28 +106,24 @@
     </header>
 
     <main class="stage-wrap" role="main">
-      <!-- PHOTO BLOCK -->
       <section class="stage" id="photoStage" aria-label="Фото">
         <div class="content">
           <div class="top-controls" role="toolbar" aria-label="Контролы">
+            <button id="downloadBtn" class="control-sm" title="Скачать текущее фото">Скачать</button>
             <button id="fullBtn" class="control-sm" title="Полный экран">Полный экран</button>
             <button id="slideBtn" class="control-sm" title="Слайд-шоу">Слайд-шоу</button>
           </div>
 
           <div class="slider" id="slider" aria-live="polite">
             <div class="slides" id="slides" role="list"></div>
-
             <button class="arrow left" id="prevBtn" aria-label="Предыдущее">‹</button>
             <button class="arrow right" id="nextBtn" aria-label="Следующее">›</button>
-
             <div class="dots" id="dots" role="tablist" aria-label="Навигация"></div>
-
             <div class="spinner" id="photoSpinner" style="display:none" aria-hidden="true"></div>
           </div>
         </div>
       </section>
 
-      <!-- VIDEO BLOCK -->
       <section class="stage" id="videoStage" aria-label="Видео">
         <div class="content">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
@@ -151,10 +133,8 @@
 
           <div class="vslider" id="vslider" aria-live="polite">
             <div class="vtrack" id="vtrack" role="list"></div>
-
             <button class="varrow left" id="vprev" aria-label="Предыдущее видео">‹</button>
             <button class="varrow right" id="vnext" aria-label="Следующее видео">›</button>
-
             <div class="spinner" id="videoSpinner" style="display:none" aria-hidden="true"></div>
           </div>
         </div>
@@ -164,11 +144,12 @@
     <footer>© 2025 — Анастасия и Роман</footer>
   </div>
 
-  <!-- Hidden audio tag; src set on demand -->
   <audio id="bgAudio" loop preload="none"></audio>
 
 <script>
-/* ========== Your media links (Yandex Disk public share links) ========== */
+// ========== МЕДИА-ССЫЛКИ С ПРЕФИКСОМ DOKPUB ==========
+const DOKPUB_PREFIX = "https://getfile.dokpub.com/yandex/get/";
+
 const IMAGE_URLS = [
   "https://disk.yandex.ru/i/TRXEn7REa1C3WA",
   "https://disk.yandex.ru/i/ghGxUUWgdb0KBg",
@@ -176,7 +157,7 @@ const IMAGE_URLS = [
   "https://disk.yandex.ru/i/FqCtgOis_onhsQ",
   "https://disk.yandex.ru/i/V8bTrKI0chQGWA",
 
-  /* ===== Новые добавленные фото ===== */
+  // Все остальные фото ссылки
   "https://disk.yandex.ru/i/8UVcVayWNW4x1g",
   "https://disk.yandex.ru/i/vynW3QSn9mcCIw",
   "https://disk.yandex.ru/i/uUx4BpY0upJnbw",
@@ -302,28 +283,30 @@ const IMAGE_URLS = [
   "https://disk.yandex.ru/i/BnaSVz84KdXgyw",
   "https://disk.yandex.ru/i/phcyW5_aU9VT0Q",
   "https://disk.yandex.ru/i/TXfMCLi-Ycallw"
-];
+].map(url => DOKPUB_PREFIX + url);
+
 const VIDEO_URLS = [
   "https://disk.yandex.ru/i/aVIzdxyn1sFOMQ",
   "https://disk.yandex.ru/i/Z5-NQ3nAHVmHMA"
-];
-const MUSIC_PUBLIC = "https://disk.yandex.ru/d/C35zD0rWMPDJmQ";
-/* ====================================================================== */
+].map(url => DOKPUB_PREFIX + url);
 
-/* Helper: convert Yandex public share -> direct href via Cloud API */
-async function getDirectLink(publicUrl){
-  try{
-    const res = await fetch(`https://cloud-api.yandex.net/v1/disk/public/resources/download?public_key=${encodeURIComponent(publicUrl)}`);
-    const json = await res.json();
-    if (json && json.href) return json.href;
-    return publicUrl;
-  }catch(err){
-    console.warn('Yandex API failed, using public URL as fallback', err);
-    return publicUrl;
-  }
+const MUSIC_PUBLIC = DOKPUB_PREFIX + "https://disk.yandex.ru/d/C35zD0rWMPDJmQ";
+
+// ========== ПРОСТОЙ ПОДХОД - ИСПОЛЬЗУЕМ ССЫЛКИ ЧЕРЕЗ DOKPUB ==========
+
+// Функция для создания прямых ссылок из публичных
+function createDirectLink(publicUrl) {
+  // Уже преобразованы через map выше
+  return publicUrl;
 }
 
-/* ---------- PHOTO SLIDER ---------- */
+// Функция для создания URL для просмотра (без скачивания)
+function createViewLink(publicUrl) {
+  // Используем dokpub ссылки для просмотра
+  return publicUrl;
+}
+
+// ========== ФОТО СЛАЙДЕР ==========
 const slidesEl = document.getElementById('slides');
 const dotsEl = document.getElementById('dots');
 const photoSpinner = document.getElementById('photoSpinner');
@@ -331,158 +314,324 @@ const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const fullBtn = document.getElementById('fullBtn');
 const slideBtn = document.getElementById('slideBtn');
+const downloadBtn = document.getElementById('downloadBtn');
 
-let photoState = { index:0, items:[], autoplay:false, timer:null, prefetched:new Set() };
+let photoState = { 
+  index: 0, 
+  items: [], 
+  autoplay: false, 
+  timer: null,
+  isMobile: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+};
 
-async function buildPhotos(){
-  photoSpinner.style.display='block';
-  for (let i=0;i<IMAGE_URLS.length;i++){
-    const slide = document.createElement('div'); slide.className='slide';
-    const frame = document.createElement('div'); frame.className='photo-frame';
-    const localSpin = document.createElement('div'); localSpin.className='spinner';
+function buildPhotos() {
+  photoSpinner.style.display = 'block';
+  
+  for (let i = 0; i < IMAGE_URLS.length; i++) {
+    const slide = document.createElement('div');
+    slide.className = 'slide';
+    
+    const frame = document.createElement('div');
+    frame.className = 'photo-frame';
+    
+    const localSpin = document.createElement('div');
+    localSpin.className = 'spinner';
     frame.appendChild(localSpin);
 
-    const img = document.createElement('img'); img.alt = `Фото ${i+1}`; img.loading='lazy';
-    (async ()=>{
-      const direct = await getDirectLink(IMAGE_URLS[i]);
-      img.src = direct;
-      img.addEventListener('load', ()=> localSpin.style.display='none');
-      img.addEventListener('error', ()=> { localSpin.style.display='none'; img.alt='Не удалось загрузить изображение'; });
-    })();
+    const img = document.createElement('img');
+    img.alt = `Фото ${i + 1}`;
+    img.loading = 'lazy';
+    
+    // Используем преобразованную ссылку через dokpub для просмотра
+    img.src = createViewLink(IMAGE_URLS[i]);
+    
+    img.onload = () => {
+      localSpin.style.display = 'none';
+    };
+    
+    img.onerror = () => {
+      localSpin.style.display = 'none';
+      console.warn(`Failed to load image ${i}`);
+    };
 
     frame.appendChild(img);
     slide.appendChild(frame);
     slidesEl.appendChild(slide);
 
-    const dot = document.createElement('button'); dot.className='dot'; dot.dataset.index=i; dot.setAttribute('aria-label', `К фото ${i+1}`);
-    dot.addEventListener('click', ()=> gotoPhoto(i));
+    const dot = document.createElement('button');
+    dot.className = 'dot';
+    dot.dataset.index = i;
+    dot.setAttribute('aria-label', `К фото ${i + 1}`);
+    dot.addEventListener('click', () => gotoPhoto(i));
     dotsEl.appendChild(dot);
 
-    photoState.items.push({ slide, frame, img });
+    photoState.items.push({ slide, frame, img, originalUrl: IMAGE_URLS[i] });
   }
-  photoSpinner.style.display='none';
+  
+  photoSpinner.style.display = 'none';
   updatePhoto();
-  // click frame -> fullscreen
-  slidesEl.addEventListener('click', (e)=>{ if (e.target.closest('.photo-frame')) openFullscreen(); });
-  document.addEventListener('keydown', (e)=>{ if (e.key==='ArrowRight') nextPhoto(); if (e.key==='ArrowLeft') prevPhoto(); if (e.key==='Escape') exitFullscreenIfNeeded(); });
+  
+  // Обработчики событий
+  slidesEl.addEventListener('click', (e) => {
+    if (e.target.closest('.photo-frame')) openFullscreen();
+  });
+  
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') nextPhoto();
+    if (e.key === 'ArrowLeft') prevPhoto();
+    if (e.key === 'Escape') exitFullscreenIfNeeded();
+  });
+  
   setupSwipeSlides();
 }
 
-function updatePhoto(){
+function updatePhoto() {
   slidesEl.style.transform = `translateX(-${photoState.index * 100}%)`;
-  photoState.items.forEach((it,i)=> it.slide.classList.toggle('active', i===photoState.index));
-  [...dotsEl.children].forEach((d,i)=> d.classList.toggle('active', i===photoState.index));
-  prefetchPhoto(photoState.index+1);
+  photoState.items.forEach((it, i) => it.slide.classList.toggle('active', i === photoState.index));
+  [...dotsEl.children].forEach((d, i) => d.classList.toggle('active', i === photoState.index));
 }
-function nextPhoto(){ photoState.index = (photoState.index+1) % photoState.items.length; updatePhoto(); }
-function prevPhoto(){ photoState.index = (photoState.index-1 + photoState.items.length) % photoState.items.length; updatePhoto(); }
-function gotoPhoto(i){ photoState.index = i; updatePhoto(); }
-prevBtn.addEventListener('click', prevPhoto); nextBtn.addEventListener('click', nextPhoto);
 
-/* slide-show toggle (was "Авто") */
-slideBtn.addEventListener('click', ()=>{
-  photoState.autoplay = !photoState.autoplay;
-  slideBtn.textContent = photoState.autoplay ? 'Стоп' : 'Слайд-шоу';
-  if (photoState.autoplay) photoState.timer = setInterval(nextPhoto, 4500);
-  else { clearInterval(photoState.timer); photoState.timer = null; }
+function nextPhoto() {
+  photoState.index = (photoState.index + 1) % photoState.items.length;
+  updatePhoto();
+}
+
+function prevPhoto() {
+  photoState.index = (photoState.index - 1 + photoState.items.length) % photoState.items.length;
+  updatePhoto();
+}
+
+function gotoPhoto(i) {
+  photoState.index = i;
+  updatePhoto();
+}
+
+prevBtn.addEventListener('click', prevPhoto);
+nextBtn.addEventListener('click', nextPhoto);
+
+// Скачать текущее фото
+downloadBtn.addEventListener('click', () => {
+  const currentIndex = photoState.index;
+  const originalUrl = photoState.items[currentIndex].originalUrl;
+  
+  // Создаем прямую ссылку для скачивания
+  const downloadUrl = createDirectLink(originalUrl);
+  
+  // Открываем в новом окне - это сработает на всех устройствах
+  window.open(downloadUrl, '_blank');
 });
 
-/* prefetch next image */
-async function prefetchPhoto(i){
-  if (i>=IMAGE_URLS.length) return;
-  if (photoState.prefetched.has(i)) return;
-  try{ const direct = await getDirectLink(IMAGE_URLS[i]); const p=new Image(); p.src=direct; photoState.prefetched.add(i); }catch(e){}
+// Слайд-шоу
+slideBtn.addEventListener('click', () => {
+  photoState.autoplay = !photoState.autoplay;
+  slideBtn.textContent = photoState.autoplay ? 'Стоп' : 'Слайд-шоу';
+  if (photoState.autoplay) {
+    photoState.timer = setInterval(nextPhoto, 4500);
+  } else {
+    clearInterval(photoState.timer);
+    photoState.timer = null;
+  }
+});
+
+// Свайпы
+function setupSwipeSlides() {
+  let sx = 0;
+  slidesEl.addEventListener('touchstart', e => {
+    sx = e.touches[0].clientX;
+  }, { passive: true });
+  
+  slidesEl.addEventListener('touchend', e => {
+    const ex = e.changedTouches[0].clientX;
+    const dx = ex - sx;
+    if (dx > 60) prevPhoto();
+    else if (dx < -60) nextPhoto();
+  }, { passive: true });
 }
 
-/* swipe */
-function setupSwipeSlides(){
-  let sx=0;
-  slidesEl.addEventListener('touchstart', e=> sx = e.touches[0].clientX, {passive:true});
-  slidesEl.addEventListener('touchend', e=>{ const ex = e.changedTouches[0].clientX; const dx = ex - sx; if (dx>60) prevPhoto(); else if (dx<-60) nextPhoto(); }, {passive:true});
-}
-
-/* fullscreen handling */
+// Полноэкранный режим
 const photoStage = document.getElementById('photoStage');
-async function openFullscreen(){
-  try{ if (photoStage.requestFullscreen) await photoStage.requestFullscreen(); else if (photoStage.webkitRequestFullscreen) await photoStage.webkitRequestFullscreen(); }catch(e){ console.warn('Fullscreen failed', e); }
+async function openFullscreen() {
+  try {
+    if (photoStage.requestFullscreen) {
+      await photoStage.requestFullscreen();
+    } else if (photoStage.webkitRequestFullscreen) {
+      await photoStage.webkitRequestFullscreen();
+    } else if (photoStage.mozRequestFullScreen) {
+      await photoStage.mozRequestFullScreen();
+    } else if (photoStage.msRequestFullscreen) {
+      await photoStage.msRequestFullscreen();
+    }
+  } catch(e) {
+    console.warn('Fullscreen failed', e);
+  }
 }
+
 fullBtn.addEventListener('click', openFullscreen);
-function exitFullscreenIfNeeded(){ if (document.fullscreenElement || document.webkitFullscreenElement){ if (document.exitFullscreen) document.exitFullscreen(); else if (document.webkitExitFullscreen) document.webkitExitFullscreen(); } }
 
-/* ========== VIDEO SLIDER ========== */
+function exitFullscreenIfNeeded() {
+  if (document.fullscreenElement || document.webkitFullscreenElement || 
+      document.mozFullScreenElement || document.msFullscreenElement) {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) {
+      document.webkitExitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      document.msExitFullscreen();
+    }
+  }
+}
+
+// ========== ВИДЕО СЛАЙДЕР ==========
 const vtrack = document.getElementById('vtrack');
-const vprev = document.getElementById('vprev'); const vnext = document.getElementById('vnext');
+const vprev = document.getElementById('vprev');
+const vnext = document.getElementById('vnext');
 const videoSpinner = document.getElementById('videoSpinner');
-let videoState = { index:0, items:[] };
+let videoState = { index: 0, items: [] };
 
-async function buildVideos(){
-  videoSpinner.style.display='block';
-  for (let i=0;i<VIDEO_URLS.length;i++){
-    const vslide = document.createElement('div'); vslide.className='vslide';
-    const vframe = document.createElement('div'); vframe.className='vframe';
-    const video = document.createElement('video'); video.controls=true; video.preload='metadata';
-    (async ()=>{ const direct = await getDirectLink(VIDEO_URLS[i]); const src = document.createElement('source'); src.src = direct; src.type = 'video/mp4'; video.appendChild(src); })();
+function buildVideos() {
+  videoSpinner.style.display = 'block';
+  
+  for (let i = 0; i < VIDEO_URLS.length; i++) {
+    const vslide = document.createElement('div');
+    vslide.className = 'vslide';
+    
+    const vframe = document.createElement('div');
+    vframe.className = 'vframe';
+    
+    const video = document.createElement('video');
+    video.controls = true;
+    video.preload = 'metadata';
+    video.playsInline = true;
+    video.setAttribute('webkit-playsinline', 'true');
+    
+    // Для видео используем преобразованные ссылки через dokpub
+    const source = document.createElement('source');
+    source.src = VIDEO_URLS[i];
+    source.type = 'video/mp4';
+    video.appendChild(source);
+    
     vframe.appendChild(video);
     vslide.appendChild(vframe);
     vtrack.appendChild(vslide);
     videoState.items.push({ vslide, video });
-    // pause music when video plays
+    
     video.addEventListener('play', onVideoPlay);
     video.addEventListener('pause', onVideoPause);
     video.addEventListener('ended', onVideoPause);
   }
-  videoSpinner.style.display='none';
+  
+  videoSpinner.style.display = 'none';
   updateVideo();
   setupSwipeVideos();
 }
 
-function updateVideo(){ vtrack.style.transform = `translateX(-${videoState.index * 100}%)`; }
-function nextVideo(){ videoState.index = (videoState.index+1) % videoState.items.length; updateVideo(); }
-function prevVideo(){ videoState.index = (videoState.index-1 + videoState.items.length) % videoState.items.length; updateVideo(); }
-vprev.addEventListener('click', prevVideo); vnext.addEventListener('click', nextVideo);
+function updateVideo() {
+  vtrack.style.transform = `translateX(-${videoState.index * 100}%)`;
+}
 
-function setupSwipeVideos(){ let sx=0; vtrack.addEventListener('touchstart', e=> sx=e.touches[0].clientX, {passive:true}); vtrack.addEventListener('touchend', e=>{ const ex = e.changedTouches[0].clientX; const dx = ex - sx; if (dx>60) prevVideo(); else if (dx<-60) nextVideo(); }, {passive:true}); }
+function nextVideo() {
+  if (videoState.items[videoState.index] && videoState.items[videoState.index].video) {
+    videoState.items[videoState.index].video.pause();
+  }
+  
+  videoState.index = (videoState.index + 1) % videoState.items.length;
+  updateVideo();
+}
 
-/* ===== MUSIC CONTROL & SYNC ===== */
+function prevVideo() {
+  if (videoState.items[videoState.index] && videoState.items[videoState.index].video) {
+    videoState.items[videoState.index].video.pause();
+  }
+  
+  videoState.index = (videoState.index - 1 + videoState.items.length) % videoState.items.length;
+  updateVideo();
+}
+
+vprev.addEventListener('click', prevVideo);
+vnext.addEventListener('click', nextVideo);
+
+function setupSwipeVideos() {
+  let sx = 0;
+  vtrack.addEventListener('touchstart', e => {
+    sx = e.touches[0].clientX;
+  }, { passive: true });
+  
+  vtrack.addEventListener('touchend', e => {
+    const ex = e.changedTouches[0].clientX;
+    const dx = ex - sx;
+    if (dx > 60) prevVideo();
+    else if (dx < -60) nextVideo();
+  }, { passive: true });
+}
+
+// ========== МУЗЫКА ==========
 const musicBtn = document.getElementById('musicBtn');
 const bgAudio = document.getElementById('bgAudio');
 let musicPlaying = false;
 let musicWasPlayingBeforeVideo = false;
 
-musicBtn.addEventListener('click', async ()=>{
-  if (!bgAudio.src){
-    const direct = await getDirectLink(MUSIC_PUBLIC);
-    bgAudio.src = direct;
+musicBtn.addEventListener('click', () => {
+  if (!bgAudio.src) {
+    // Для музыки используем преобразованную ссылку через dokpub
+    bgAudio.src = MUSIC_PUBLIC;
   }
-  if (!musicPlaying){
-    try{ await bgAudio.play(); musicPlaying=true; musicBtn.classList.add('play'); musicBtn.setAttribute('aria-pressed','true'); }
-    catch(err){ console.warn('Playback failed', err); alert('Воспроизведение может быть заблокировано браузером — нажмите ещё раз.'); }
+  
+  if (!musicPlaying) {
+    try {
+      bgAudio.play();
+      musicPlaying = true;
+      musicBtn.classList.add('play');
+      musicBtn.setAttribute('aria-pressed', 'true');
+    } catch(err) {
+      console.warn('Playback failed', err);
+      alert('Воспроизведение может быть заблокировано браузером — нажмите ещё раз.');
+    }
   } else {
-    bgAudio.pause(); musicPlaying=false; musicBtn.classList.remove('play'); musicBtn.setAttribute('aria-pressed','false');
+    bgAudio.pause();
+    musicPlaying = false;
+    musicBtn.classList.remove('play');
+    musicBtn.setAttribute('aria-pressed', 'false');
   }
 });
 
-function onVideoPlay(){
-  if (bgAudio.src && !bgAudio.paused){
+function onVideoPlay() {
+  if (bgAudio.src && !bgAudio.paused) {
     musicWasPlayingBeforeVideo = true;
-    bgAudio.pause(); musicPlaying=false; musicBtn.classList.remove('play');
-  } else musicWasPlayingBeforeVideo = false;
-}
-function onVideoPause(){
-  const anyPlaying = videoState.items.some(it => it.video && !it.video.paused && !it.video.ended);
-  if (!anyPlaying && musicWasPlayingBeforeVideo){
-    bgAudio.play().then(()=>{ musicPlaying=true; musicBtn.classList.add('play'); }).catch(()=>{});
-    musicWasPlayingBeforeVideo=false;
+    bgAudio.pause();
+    musicPlaying = false;
+    musicBtn.classList.remove('play');
+  } else {
+    musicWasPlayingBeforeVideo = false;
   }
 }
 
-/* ========== INIT ========== */
-(async function init(){
-  await buildPhotos();
-  await buildVideos();
+function onVideoPause() {
+  const anyPlaying = videoState.items.some(it => it.video && !it.video.paused && !it.video.ended);
+  if (!anyPlaying && musicWasPlayingBeforeVideo) {
+    bgAudio.play().then(() => {
+      musicPlaying = true;
+      musicBtn.classList.add('play');
+    }).catch(() => {});
+    musicWasPlayingBeforeVideo = false;
+  }
+}
+
+// ========== ИНИЦИАЛИЗАЦИЯ ==========
+function init() {
+  buildPhotos();
+  buildVideos();
   updatePhoto();
   updateVideo();
-})();
+}
+
+// Запускаем когда DOM готов
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
 </body>
 </html>
