@@ -21,7 +21,7 @@
   body::before{
     content:"";
     position:fixed; inset:0; z-index:-2; pointer-events:none;
-    background-image: url("https://getfile.dokpub.com/yandex/get/https://disk.yandex.ru/i/52X_ClrcdF2h4Q");
+    background-image: url("https://disk.yandex.ru/i/52X_ClrcdF2h4Q");
     background-repeat: repeat;
     background-size: 400px 400px;
     opacity: 0.15;
@@ -147,9 +147,7 @@
   <audio id="bgAudio" loop preload="none"></audio>
 
 <script>
-// ========== МЕДИА-ССЫЛКИ С ПРЕФИКСОМ DOKPUB ==========
-const DOKPUB_PREFIX = "https://getfile.dokpub.com/yandex/get/";
-
+// ========== МЕДИА-ССЫЛКИ ==========
 const IMAGE_URLS = [
   "https://disk.yandex.ru/i/TRXEn7REa1C3WA",
   "https://disk.yandex.ru/i/ghGxUUWgdb0KBg",
@@ -283,28 +281,14 @@ const IMAGE_URLS = [
   "https://disk.yandex.ru/i/BnaSVz84KdXgyw",
   "https://disk.yandex.ru/i/phcyW5_aU9VT0Q",
   "https://disk.yandex.ru/i/TXfMCLi-Ycallw"
-].map(url => DOKPUB_PREFIX + url);
+];
 
 const VIDEO_URLS = [
   "https://disk.yandex.ru/i/aVIzdxyn1sFOMQ",
   "https://disk.yandex.ru/i/Z5-NQ3nAHVmHMA"
-].map(url => DOKPUB_PREFIX + url);
+];
 
-const MUSIC_PUBLIC = DOKPUB_PREFIX + "https://disk.yandex.ru/d/C35zD0rWMPDJmQ";
-
-// ========== ПРОСТОЙ ПОДХОД - ИСПОЛЬЗУЕМ ССЫЛКИ ЧЕРЕЗ DOKPUB ==========
-
-// Функция для создания прямых ссылок из публичных
-function createDirectLink(publicUrl) {
-  // Уже преобразованы через map выше
-  return publicUrl;
-}
-
-// Функция для создания URL для просмотра (без скачивания)
-function createViewLink(publicUrl) {
-  // Используем dokpub ссылки для просмотра
-  return publicUrl;
-}
+const MUSIC_PUBLIC = "https://disk.yandex.ru/d/C35zD0rWMPDJmQ";
 
 // ========== ФОТО СЛАЙДЕР ==========
 const slidesEl = document.getElementById('slides');
@@ -342,8 +326,7 @@ function buildPhotos() {
     img.alt = `Фото ${i + 1}`;
     img.loading = 'lazy';
     
-    // Используем преобразованную ссылку через dokpub для просмотра
-    img.src = createViewLink(IMAGE_URLS[i]);
+    img.src = IMAGE_URLS[i];
     
     img.onload = () => {
       localSpin.style.display = 'none';
@@ -414,11 +397,8 @@ downloadBtn.addEventListener('click', () => {
   const currentIndex = photoState.index;
   const originalUrl = photoState.items[currentIndex].originalUrl;
   
-  // Создаем прямую ссылку для скачивания
-  const downloadUrl = createDirectLink(originalUrl);
-  
   // Открываем в новом окне - это сработает на всех устройствах
-  window.open(downloadUrl, '_blank');
+  window.open(originalUrl, '_blank');
 });
 
 // Слайд-шоу
@@ -506,7 +486,6 @@ function buildVideos() {
     video.playsInline = true;
     video.setAttribute('webkit-playsinline', 'true');
     
-    // Для видео используем преобразованные ссылки через dokpub
     const source = document.createElement('source');
     source.src = VIDEO_URLS[i];
     source.type = 'video/mp4';
@@ -574,7 +553,6 @@ let musicWasPlayingBeforeVideo = false;
 
 musicBtn.addEventListener('click', () => {
   if (!bgAudio.src) {
-    // Для музыки используем преобразованную ссылку через dokpub
     bgAudio.src = MUSIC_PUBLIC;
   }
   
